@@ -10,7 +10,7 @@
     <a href="https://packagist.org/packages/knppy/units-laravel"><img src="https://img.shields.io/packagist/dt/knppy/units-laravel.svg?style=flat-square" alt="Total Downloads"></a>
 </p>
 
-TODO
+Laravel integration for [knppy/units](https://github.com/knppy/units): Eloquent casts, validation, localized parsing and formatting, and migration helpers.
 
 ## Installation
 
@@ -34,9 +34,82 @@ Or, you may publish each resource individually:
 php artisan vendor:publish --tag="units-laravel-config"
 ```
 
+### Publishing the Translations
+
+```bash
+php artisan vendor:publish --tag="units-laravel-lang"
+```
+
 ## Usage
 
-<!-- Add a basic usage example here. -->
+### Migrations
+
+`unit()` adds `{name}_amount` (a `decimal(38, 0)`) and `{name}_unit` (a string) columns. Pass `nullable: true` for optional units; `dropUnit()` drops both.
+
+```php
+Schema::create('products', function (Blueprint $table) {
+    $table->id();
+    $table->unit('weight');
+    $table->unit('volume', nullable: true);
+});
+```
+
+### Eloquent
+
+Cast the attribute with `UnitCast`. It reads and writes both columns and returns a `Knppy\Units\Unit`:
+
+```php
+use Knppy\LaravelUnits\Casts\UnitCast;
+
+class Product extends Model
+{
+    protected function casts(): array
+    {
+        return [
+            'weight' => UnitCast::class,
+            'volume' => UnitCast::class.':ml', // "250" is stored as 250 ml
+        ];
+    }
+}
+
+$product->weight = new Unit(100, new UnitOfMeasurement('kg'));
+$product->weight = '100 kg';                    // strings are parsed
+$product->weight->getAmount();                  // "100"
+$product->weight->convertTo(new UnitOfMeasurement('g')); // 100000 g
+```
+
+Because the value lives in two columns, add the attribute to `$appends` and hide the columns to include it in `toArray()` and `toJson()` as `{"amount": "100", "unit": "kg"}`:
+
+```php
+protected $appends = ['weight'];
+protected $hidden = ['weight_amount', 'weight_unit'];
+```
+
+### Validation
+
+```php
+use Knppy\LaravelUnits\Rules\UnitRule;
+use Knppy\Units\Quantity;
+
+$request->validate([
+    'weight' => ['required', UnitRule::make()->quantity(Quantity::Mass)],
+    'volume' => [UnitRule::make()->in('ml', 'l')->fallback('ml')],
+]);
+```
+
+Input is read with the localized names of the application locale first, then as symbols. Use `->locale('nl')` to override it.
+
+### Parsing, formatting and converting
+
+```php
+use Knppy\LaravelUnits\Facades\LaravelUnits;
+
+LaravelUnits::parse('2 kilogram');                  // Unit(2, kg)
+LaravelUnits::format(LaravelUnits::make(1500, 'm')); // "1,500 metres", or "1.500 meters" with the nl locale
+LaravelUnits::convert(LaravelUnits::make(5, 'km'), 'm'); // 5000 m
+```
+
+`UnitParser`, `UnitFormatter`, `UnitConverter` and `UnitNames` are bound in the container and follow the configuration (`locale`, `names`, `converter`, `grouping`, `columns`).
 
 ## Changelog
 
