@@ -10,7 +10,7 @@ use Knppy\Units\UnitOfMeasurement;
 it('stores a unit in an amount and a unit column', function (): void {
     $product = Product::create(['weight' => new Unit(100, new UnitOfMeasurement('kg'))]);
 
-    $this->assertDatabaseHas('products', ['id' => $product->id, 'weight_amount' => 100, 'weight_unit' => 'kg']);
+    $this->assertDatabaseHas('test_products', ['id' => $product->id, 'weight_amount' => 100, 'weight_unit' => 'kg']);
 
     $weight = $product->fresh()->weight;
 

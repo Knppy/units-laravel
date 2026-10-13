@@ -17,9 +17,15 @@ abstract class TestCase extends Orchestra
         ];
     }
 
+    protected function defineEnvironment($app): void
+    {
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', ['driver' => 'sqlite', 'database' => ':memory:', 'prefix' => '']);
+    }
+
     protected function defineDatabaseMigrations(): void
     {
-        Schema::create('products', function ($table): void {
+        Schema::create('test_products', function ($table): void {
             $table->id();
             $table->unit('weight', nullable: true);
             $table->unit('volume', nullable: true);

@@ -20,7 +20,7 @@ it('creates the amount and unit columns', function (): void {
 });
 
 it('drops the columns', function (): void {
-    Schema::table('products', fn ($table) => $table->dropUnit('volume'));
+    Schema::table('test_products', fn ($table) => $table->dropUnit('volume'));
 
-    expect(Schema::getColumnListing('products'))->toBe(['id', 'weight_amount', 'weight_unit']);
+    expect(Schema::getColumnListing('test_products'))->toBe(['id', 'weight_amount', 'weight_unit']);
 });

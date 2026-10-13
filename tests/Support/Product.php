@@ -11,6 +11,8 @@ class Product extends Model
 {
     public $timestamps = false;
 
+    protected $table = 'test_products';
+
     protected $guarded = [];
 
     protected $appends = ['weight'];

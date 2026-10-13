@@ -1,6 +1,7 @@
 laravel: '@testbench'
 
 providers:
+  - Knppy\LaravelUnits\LaravelUnitsServiceProvider
   # - Workbench\App\Providers\WorkbenchServiceProvider
 
 migrations:
