@@ -6,7 +6,7 @@
     <a href="https://packagist.org/packages/knppy/units-laravel"><img src="https://img.shields.io/packagist/v/knppy/units-laravel.svg?style=flat-square" alt="Packagist"></a>
     <a href="https://packagist.org/packages/knppy/units-laravel"><img src="https://img.shields.io/packagist/php-v/knppy/units-laravel.svg?style=flat-square" alt="PHP from Packagist"></a>
     <a href="https://packagist.org/packages/knppy/units-laravel"><img src="https://badge.laravel.cloud/badge/knppy/units-laravel?style=flat" alt="Laravel versions"></a>
-    <a href="https://github.com/knppy/units-laravel/actions"><img alt="GitHub Workflow Status (main)" src="https://img.shields.io/github/actions/workflow/status/knppy/units-laravel/tests.yml?branch=main&label=Tests&style=flat-square"></a>
+    <a href="https://github.com/knppy/units-laravel/actions"><img alt="GitHub Workflow Status (master)" src="https://img.shields.io/github/actions/workflow/status/knppy/units-laravel/tests.yml?branch=master&label=Tests&style=flat-square"></a>
     <a href="https://packagist.org/packages/knppy/units-laravel"><img src="https://img.shields.io/packagist/dt/knppy/units-laravel.svg?style=flat-square" alt="Total Downloads"></a>
 </p>
 
