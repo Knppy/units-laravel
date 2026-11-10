@@ -20,8 +20,24 @@ class UnitCast implements CastsAttributes
 {
     /**
      * @param  string|null  $fallbackSymbol  Unit used for assigned strings without a unit, such as "5".
+     * @param  int|string  $scale  Number of decimals the amount column holds, see the scale of the unit() migration.
      */
-    public function __construct(private readonly ?string $fallbackSymbol = null) {}
+    public function __construct(private readonly ?string $fallbackSymbol = null, int|string $scale = 0)
+    {
+        $this->scale = (int) $scale;
+    }
+
+    private readonly int $scale;
+
+    /**
+     * The cast definition with a fallback symbol and a scale, e.g. "UnitCast::using('g', 2)" for "1.25" grams.
+     *
+     * @return class-string<self>|string
+     */
+    public static function using(?string $fallbackSymbol = null, int $scale = 0): string
+    {
+        return self::class.':'.$fallbackSymbol.','.$scale;
+    }
 
     /**
      * @param  array<string, mixed>  $attributes
@@ -35,7 +51,7 @@ class UnitCast implements CastsAttributes
             return null;
         }
 
-        return new Unit(self::normalize($amount), new UnitOfMeasurement((string) $symbol));
+        return new Unit($this->normalize($amount), new UnitOfMeasurement((string) $symbol), $this->scale);
     }
 
     /**
@@ -45,7 +61,7 @@ class UnitCast implements CastsAttributes
     public function set(Model $model, string $key, mixed $value, array $attributes): array
     {
         if (is_string($value)) {
-            $value = app(LaravelUnits::class)->parse($value, $this->fallbackSymbol);
+            $value = app(LaravelUnits::class)->parse($value, $this->fallbackSymbol === '' ? null : $this->fallbackSymbol);
         }
 
         if ($value !== null && ! $value instanceof Unit) {
@@ -66,16 +82,20 @@ class UnitCast implements CastsAttributes
     }
 
     /**
-     * Databases return integer amounts as integers, floats or decimal strings such as "100.00".
+     * Databases return amounts as integers, floats or decimal strings such as "100.00" or "1.50".
      */
-    private static function normalize(mixed $amount): string
+    private function normalize(mixed $amount): string
     {
         if (is_float($amount)) {
-            return number_format($amount, 0, '', '');
+            return number_format($amount, $this->scale, '.', '');
         }
 
         $amount = (string) $amount;
 
-        return (string) preg_replace('/^(-?\d+)\.0+$/', '$1', $amount);
+        if ($this->scale === 0) {
+            return (string) preg_replace('/^(-?\d+)\.0+$/', '$1', $amount);
+        }
+
+        return $amount;
     }
 }

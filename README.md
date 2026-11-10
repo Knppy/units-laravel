@@ -44,7 +44,7 @@ php artisan vendor:publish --tag="units-laravel-lang"
 
 ### Migrations
 
-`unit()` adds `{name}_amount` (a `decimal(38, 0)`) and `{name}_unit` (a string) columns. Pass `nullable: true` for optional units; `dropUnit()` drops both.
+`unit()` adds `{name}_amount` (a `decimal(38, 0)`) and `{name}_unit` (a string) columns. Pass `nullable: true` for optional units and `scale: 2` for amounts with decimals (`decimal(38, 2)`); `dropUnit()` drops both.
 
 ```php
 Schema::create('products', function (Blueprint $table) {
@@ -68,6 +68,7 @@ class Product extends Model
         return [
             'weight' => UnitCast::class,
             'volume' => UnitCast::class.':ml', // "250" is stored as 250 ml
+            'quantity' => UnitCast::using('g', 2), // decimals up to the scale of the column
         ];
     }
 }
