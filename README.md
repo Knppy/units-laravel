@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Units For  Laravel</h1>
+    <h1>Units For Laravel</h1>
 </div>
 
 <p align="center">
@@ -117,7 +117,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Contributing
 
-Thank you for considering contributing to Units For  Laravel! Please review our [contributing guide](.github/CONTRIBUTING.md) to get started.
+Thank you for considering contributing to Units For Laravel! Please review our [contributing guide](.github/CONTRIBUTING.md) to get started.
 
 ## Security Vulnerabilities
 
@@ -130,4 +130,4 @@ Please review [our security policy](.github/SECURITY.md) on how to report securi
 
 ## License
 
-Units For  Laravel is open-sourced software licensed under the [MIT license](LICENSE.md).
+Units For Laravel is open-sourced software licensed under the [MIT license](LICENSE.md).

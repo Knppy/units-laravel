@@ -1,15 +1,15 @@
 ---
 name: units-laravel-development
 description: >
-  Configure and apply the Units For  Laravel package in Laravel applications.
+  Configure and apply the Units For Laravel package in Laravel applications.
 license: MIT
 metadata:
   author: Michael Beers
 ---
 
-# Units For  Laravel
+# Units For Laravel
 
-Use this skill when a Laravel application needs to integrate the Units For  Laravel package.
+Use this skill when a Laravel application needs to integrate the Units For Laravel package.
 
 ## Primary Goal
 
