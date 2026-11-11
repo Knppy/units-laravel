@@ -21,7 +21,7 @@
         "illuminate/database": "^12.0||^13.0",
         "illuminate/support": "^12.0||^13.0",
         "illuminate/validation": "^12.0||^13.0",
-        "knppy/units": "dev-feature/decimal-amounts-metric-cooking as 0.2.0"
+        "knppy/units": "^0.2"
     },
     "require-dev": {
         "larastan/larastan": "^3.9",
@@ -105,11 +105,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Knppy/units"
-        }
-    ]
+    "prefer-stable": true
 }
