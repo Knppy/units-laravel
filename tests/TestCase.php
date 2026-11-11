@@ -29,6 +29,7 @@ abstract class TestCase extends Orchestra
             $table->id();
             $table->unit('weight', nullable: true);
             $table->unit('volume', nullable: true);
+            $table->unit('quantity', nullable: true, scale: 2);
         });
     }
 }

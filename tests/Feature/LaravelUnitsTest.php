@@ -69,3 +69,13 @@ it('rejects classes that do not implement the contract', function (): void {
 
     LaravelUnits::names();
 })->throws(InvalidArgumentException::class);
+
+it('converts with the metric kitchen when configured', function (): void {
+    config()->set('units-laravel.cooking', 'metric');
+
+    expect(LaravelUnits::convert(LaravelUnits::make('1.5', 'tbsp', 2), 'ml', 'cooking')->getAmount())->toBe('22.5');
+
+    config()->set('units-laravel.cooking', 'us');
+
+    expect(LaravelUnits::convert(LaravelUnits::make(1, 'tbsp', 2), 'tsp', 'cooking')->getAmount())->toBe('3');
+});

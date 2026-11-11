@@ -20,6 +20,8 @@ use Knppy\Units\Unit;
 use Knppy\Units\UnitNames\CookingUnitNames;
 use Knppy\Units\UnitNames\SIUnitNames;
 use Knppy\Units\UnitOfMeasurement;
+use Knppy\Units\UnitOfMeasurements\CookingUnitOfMeasurements;
+use Knppy\Units\UnitOfMeasurements\MetricCookingUnitOfMeasurements;
 
 class LaravelUnits
 {
@@ -28,9 +30,9 @@ class LaravelUnits
     /**
      * Create a unit from an amount and a symbol.
      */
-    public function make(int|string $amount, string $symbol): Unit
+    public function make(int|string $amount, string $symbol, int $scale = 0): Unit
     {
-        return new Unit($amount, new UnitOfMeasurement($symbol));
+        return new Unit($amount, new UnitOfMeasurement($symbol), $scale);
     }
 
     /**
@@ -80,8 +82,19 @@ class LaravelUnits
 
         return match ($converter) {
             'si' => new SIUnitConverter,
-            'cooking' => new CookingUnitConverter,
+            'cooking' => new CookingUnitConverter($this->cookingUnitOfMeasurements()),
             default => $this->instance($converter, UnitConverter::class),
+        };
+    }
+
+    /**
+     * The cooking units with the spoons and cups of the configured kitchen, "us" or "metric".
+     */
+    public function cookingUnitOfMeasurements(): CookingUnitOfMeasurements
+    {
+        return match ((string) $this->config('cooking', 'us')) {
+            'metric' => new MetricCookingUnitOfMeasurements,
+            default => new CookingUnitOfMeasurements,
         };
     }
 

@@ -22,5 +22,13 @@ it('creates the amount and unit columns', function (): void {
 it('drops the columns', function (): void {
     Schema::table('test_products', fn ($table) => $table->dropUnit('volume'));
 
-    expect(Schema::getColumnListing('test_products'))->toBe(['id', 'weight_amount', 'weight_unit']);
+    expect(Schema::getColumnListing('test_products'))->toBe(['id', 'weight_amount', 'weight_unit', 'quantity_amount', 'quantity_unit']);
+});
+
+it('creates a decimal amount column with a scale', function (): void {
+    Schema::create('ingredients', function ($table): void {
+        $table->unit('measure', scale: 2);
+    });
+
+    expect(collect(Schema::getColumns('ingredients'))->keyBy('name')['measure_amount']['type_name'])->toBeIn(['decimal', 'numeric']);
 });

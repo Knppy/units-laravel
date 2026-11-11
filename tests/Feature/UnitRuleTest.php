@@ -19,6 +19,14 @@ it('rejects other input', function (mixed $value): void {
     expect(unitErrors($value, UnitRule::make()))->toBe(['The weight field must be a whole amount with a unit, such as 5 kg.']);
 })->with(['text' => ['text'], 'decimal' => ['5.5 kg'], 'no unit' => ['5'], 'array' => [['5 kg']], 'null' => [null]]);
 
+it('limits the decimals', function (): void {
+    $rule = UnitRule::make()->decimals(2);
+
+    expect(unitErrors('5.25 kg', $rule))->toBe([])
+        ->and(unitErrors('5 kg', $rule))->toBe([])
+        ->and(unitErrors('5.255 kg', $rule))->toBe(['The weight field can have at most 2 decimals.']);
+});
+
 it('accepts amounts without a unit with a fallback', function (): void {
     expect(unitErrors('5', UnitRule::make()->fallback('kg')))->toBe([])
         ->and(unitErrors(5, UnitRule::make()->fallback('kg')))->toBe([]);

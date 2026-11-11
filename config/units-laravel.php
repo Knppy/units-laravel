@@ -42,6 +42,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Cooking units
+    |--------------------------------------------------------------------------
+    |
+    | The size of the spoons and cups used when converting with the "cooking"
+    | converter: "us" (a tablespoon is 14.79 ml) or "metric" (a teaspoon is
+    | 5 ml, a tablespoon 15 ml and a cup 250 ml).
+    |
+    */
+
+    'cooking' => 'us',
+
+    /*
+    |--------------------------------------------------------------------------
     | Digit grouping
     |--------------------------------------------------------------------------
     |

@@ -9,7 +9,7 @@ use Illuminate\Database\Schema\Blueprint;
 class BlueprintMacros
 {
     /**
-     * Amounts are arbitrary length integers, so the amount column is a decimal without a scale.
+     * Amounts are arbitrary length numbers, so the amount column is a wide decimal; whole numbers unless a scale is given.
      */
     public const int AMOUNT_PRECISION = 38;
 
@@ -17,9 +17,9 @@ class BlueprintMacros
 
     public static function register(): void
     {
-        Blueprint::macro('unit', function (string $column, bool $nullable = false, int $precision = BlueprintMacros::AMOUNT_PRECISION): void {
+        Blueprint::macro('unit', function (string $column, bool $nullable = false, int $precision = BlueprintMacros::AMOUNT_PRECISION, int $scale = 0): void {
             /** @var Blueprint $this */
-            $amount = $this->decimal($column.BlueprintMacros::suffix('amount'), $precision, 0);
+            $amount = $this->decimal($column.BlueprintMacros::suffix('amount'), $precision, $scale);
             $unit = $this->string($column.BlueprintMacros::suffix('unit'), BlueprintMacros::UNIT_LENGTH);
 
             if ($nullable) {

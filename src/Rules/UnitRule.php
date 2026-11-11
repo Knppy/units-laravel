@@ -27,6 +27,8 @@ class UnitRule implements ValidationRule
 
     private ?string $locale = null;
 
+    private int $decimals = 0;
+
     public static function make(): self
     {
         return new self;
@@ -63,6 +65,16 @@ class UnitRule implements ValidationRule
         return $this;
     }
 
+    /**
+     * Allow amounts with up to this many decimals, none by default.
+     */
+    public function decimals(int $decimals): self
+    {
+        $this->decimals = $decimals;
+
+        return $this;
+    }
+
     public function locale(string $locale): self
     {
         $this->locale = $locale;
@@ -85,6 +97,12 @@ class UnitRule implements ValidationRule
             $unit = app(LaravelUnits::class)->parse((string) $value, $this->fallbackSymbol, $this->locale);
         } catch (Exception|InvalidArgumentException) {
             $fail('units-laravel::validation.unit')->translate();
+
+            return;
+        }
+
+        if ($unit->getScale() > $this->decimals) {
+            $fail($this->decimals === 0 ? 'units-laravel::validation.unit' : 'units-laravel::validation.unit_decimals')->translate(['decimals' => $this->decimals]);
 
             return;
         }

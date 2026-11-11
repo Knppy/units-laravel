@@ -78,3 +78,26 @@ it('uses the configured column suffixes', function (): void {
 
     expect($product->getAttributes())->toBe(['weight_value' => '5', 'weight_symbol' => 'kg']);
 });
+
+it('stores decimal amounts with a scale', function (): void {
+    $product = Product::create(['quantity' => '1.5 kg']);
+
+    $quantity = $product->fresh()->quantity;
+
+    expect($quantity->getScale())->toBe(2)
+        ->and($quantity->getUnitOfMeasurement()->getSymbol())->toBe('kg')
+        ->and((float) $quantity->getAmount())->toBe(1.5);
+
+    $product->quantity = '250';
+    $product->save();
+
+    expect((float) $product->fresh()->quantity->getAmount())->toBe(250.0)
+        ->and((string) $product->fresh()->quantity->getUnitOfMeasurement())->toBe('g');
+});
+
+it('reads float amounts at the scale', function (): void {
+    $product = new Product;
+    $product->setRawAttributes(['quantity_amount' => 1.5, 'quantity_unit' => 'kg']);
+
+    expect($product->quantity->getAmount())->toBe('1.50');
+});

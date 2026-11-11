@@ -21,7 +21,7 @@
         "illuminate/database": "^12.0||^13.0",
         "illuminate/support": "^12.0||^13.0",
         "illuminate/validation": "^12.0||^13.0",
-        "knppy/units": "^0.1"
+        "knppy/units": "^0.2"
     },
     "require-dev": {
         "larastan/larastan": "^3.9",
@@ -66,7 +66,7 @@
             "vendor/bin/pint --parallel"
         ],
         "lint:check": [
-            "vendor/bin/pint --parallel --test"
+            "vendor/bin/pint --parallel --test --format json"
         ],
         "analyse": [
             "vendor/bin/phpstan analyse"

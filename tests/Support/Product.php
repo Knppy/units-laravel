@@ -27,6 +27,7 @@ class Product extends Model
         return [
             'weight' => UnitCast::class,
             'volume' => UnitCast::class.':ml',
+            'quantity' => UnitCast::using('g', 2),
         ];
     }
 }
